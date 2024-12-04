@@ -34,6 +34,10 @@ def listfiles(folder, include_hidden=False):
         return out
 
 
+def yield_subfolders(folders):
+    for f in folders:
+        yield from (pathlib.Path(x) for x in scandir(f) if pathlib.Path(x).is_dir())
+
 def listfolders(folder):
     folders = [pathlib.Path(x) for x in scandir(folder) if pathlib.Path(x).is_dir()]
     return folders
@@ -45,7 +49,7 @@ def walk_keys(dictionary, layer=0):
         keys = dictionary.keys()
         for key in keys:
             printStr = "--" * layer
-            printStr += key
+            printStr += f'{key}'
             print(printStr)
             walk_keys(dictionary[key], layer)
     except AttributeError:
